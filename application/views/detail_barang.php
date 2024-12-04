@@ -183,24 +183,32 @@
             </div>
         </div>
         <hr>
-        <h3>Ulasan Barang</h3>
-        <?php $ulasan = $this->Model_barang->ulasan_barang($b->id_barang)->result();?>
-        <?php if(!empty($ulasan)){?>
-            <?php foreach($ulasan as $u) :?>
-                <div class="card mb-2">
+        <div class="row justify-content-center">
+            <div class="col-11">
+                <div class="card">
                     <div class="card-body">
-                        <h6><strong>Dari : <?= $u->nama_user ?> ( <?= $u->rating?> / 5)</strong></h6>
-                        <h6>
-                            <?php for ($i = 0; $i < $u->rating; $i++) : ?>
-                                <i class="fas fa-star text-warning"></i>
-                            <?php endfor; ?>
-                        </h6>
-                        <hr>
-                        <h6><?= $u->ulasan ?></h6>
+                    <h3>Ulasan Barang</h3>
+                        <?php $ulasan = $this->Model_barang->ulasan_barang($b->id_barang)->result();?>
+                        <?php if(!empty($ulasan)){?>
+                            <?php foreach($ulasan as $u) :?>
+                                <div class="card mb-2">
+                                    <div class="card-body">
+                                        <h6><strong>Dari : <?= $u->nama_user ?> ( <?= $u->rating?> / 5)</strong></h6>
+                                        <h6>
+                                            <?php for ($i = 0; $i < $u->rating; $i++) : ?>
+                                                <i class="fas fa-star text-warning"></i>
+                                            <?php endfor; ?>
+                                        </h6>
+                                        <hr>
+                                        <h6><?= $u->ulasan ?></h6>
+                                    </div>
+                                </div>
+                            <?php endforeach ?>
+                        <?php } ?>
                     </div>
                 </div>
-            <?php endforeach ?>
-        <?php } ?>
+            </div>
+        </div>
     <?php endforeach ?>
 </div>
 
