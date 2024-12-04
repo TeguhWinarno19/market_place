@@ -21,15 +21,19 @@ class Dashboard extends CI_Controller {
 		foreach ($data['barang'] as $produk) {
             $produk->terjual_count = $this->Model_barang->getTerjualCount($produk->id_barang);
         }
-		$id_user = $data['user']['id_user'];
-        $hitung = $this->Model_chat->notif2($id_user)->result();
-        $jumlah_notif = 0;
-        if(!empty($hitung)){
-            foreach($hitung as $h):
-                $jumlah_notif = $jumlah_notif+1;
-            endforeach;
-        }
-        $data['notifikasi'] = $jumlah_notif;
+		if (!empty($data['user']['id_user'])){
+			$id_user = $data['user']['id_user'];
+			$hitung = $this->Model_chat->notif2($id_user)->result();
+			$jumlah_notif = 0;
+			if(!empty($hitung)){
+				foreach($hitung as $h):
+					$jumlah_notif = $jumlah_notif+1;
+				endforeach;
+			}
+			$data['notifikasi'] = $jumlah_notif;
+		} else {
+			$data['notifikasi'] = 0;
+		} 
 		$this->load->view('template/header',$data);
 		$this->load->view('template/navbar',$data);
 		$this->load->view('index',$data);
@@ -48,15 +52,19 @@ class Dashboard extends CI_Controller {
 		foreach ($data['pilihan'] as $produk) {
             $produk->wishlist_count = $this->Model_barang->getWishlistCount($produk->id_barang);
         }
-		$id_user = $data['user']['id_user'];
-        $hitung = $this->Model_chat->notif2($id_user)->result();
-        $jumlah_notif = 0;
-        if(!empty($hitung)){
-            foreach($hitung as $h):
-                $jumlah_notif = $jumlah_notif+1;
-            endforeach;
-        }
-        $data['notifikasi'] = $jumlah_notif;
+		if (!empty($data['user']['id_user'])){
+			$id_user = $data['user']['id_user'];
+			$hitung = $this->Model_chat->notif2($id_user)->result();
+			$jumlah_notif = 0;
+			if(!empty($hitung)){
+				foreach($hitung as $h):
+					$jumlah_notif = $jumlah_notif+1;
+				endforeach;
+			}
+			$data['notifikasi'] = $jumlah_notif;
+		} else {
+			$data['notifikasi'] = 0;
+		} 
 		$this->load->view('template/header',$data);
 		$this->load->view('template/navbar',$data);
 		$this->load->view('detail_toko_beranda',$data);
@@ -74,15 +82,19 @@ class Dashboard extends CI_Controller {
 		foreach ($data['pilihan'] as $produk) {
             $produk->wishlist_count = $this->Model_barang->getWishlistCount($produk->id_barang);
         }
-		$id_user = $data['user']['id_user'];
-        $hitung = $this->Model_chat->notif2($id_user)->result();
-        $jumlah_notif = 0;
-        if(!empty($hitung)){
-            foreach($hitung as $h):
-                $jumlah_notif = $jumlah_notif+1;
-            endforeach;
-        }
-        $data['notifikasi'] = $jumlah_notif;
+		if (!empty($data['user']['id_user'])){
+			$id_user = $data['user']['id_user'];
+			$hitung = $this->Model_chat->notif2($id_user)->result();
+			$jumlah_notif = 0;
+			if(!empty($hitung)){
+				foreach($hitung as $h):
+					$jumlah_notif = $jumlah_notif+1;
+				endforeach;
+			}
+			$data['notifikasi'] = $jumlah_notif;
+		} else {
+			$data['notifikasi'] = 0;
+		} 
 		$this->load->view('template/header',$data);
 		$this->load->view('template/navbar',$data);
 		$this->load->view('detail_toko_produk',$data);
@@ -210,15 +222,19 @@ class Dashboard extends CI_Controller {
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['favorit'] = $this->Model_kategori->ambil_data_favorit()->result();
 		$data['pilihan'] = $this->Model_barang->ambil_data_all3()->result();
-		$id_user = $data['user']['id_user'];
-        $hitung = $this->Model_chat->notif2($id_user)->result();
-        $jumlah_notif = 0;
-        if(!empty($hitung)){
-            foreach($hitung as $h):
-                $jumlah_notif = $jumlah_notif+1;
-            endforeach;
-        }
-        $data['notifikasi'] = $jumlah_notif;
+		if (!empty($data['user']['id_user'])){
+			$id_user = $data['user']['id_user'];
+			$hitung = $this->Model_chat->notif2($id_user)->result();
+			$jumlah_notif = 0;
+			if(!empty($hitung)){
+				foreach($hitung as $h):
+					$jumlah_notif = $jumlah_notif+1;
+				endforeach;
+			}
+			$data['notifikasi'] = $jumlah_notif;
+		} else {
+			$data['notifikasi'] = 0;
+		} 
 		$this->load->view('template/header',$data);
 		$this->load->view('template/navbar',$data);
 		$this->load->view('kategori',$data);
@@ -439,15 +455,19 @@ class Dashboard extends CI_Controller {
 		foreach ($data['barang'] as $produk) {
             $produk->terjual_count = $this->Model_barang->getTerjualCount($produk->id_barang);
         }
-		$id_user = $data['user']['id_user'];
-        $hitung = $this->Model_chat->notif2($id_user)->result();
-        $jumlah_notif = 0;
-        if(!empty($hitung)){
-            foreach($hitung as $h):
-                $jumlah_notif = $jumlah_notif+1;
-            endforeach;
-        }
-        $data['notifikasi'] = $jumlah_notif;
+		if (!empty($data['user']['id_user'])){
+			$id_user = $data['user']['id_user'];
+			$hitung = $this->Model_chat->notif2($id_user)->result();
+			$jumlah_notif = 0;
+			if(!empty($hitung)){
+				foreach($hitung as $h):
+					$jumlah_notif = $jumlah_notif+1;
+				endforeach;
+			}
+			$data['notifikasi'] = $jumlah_notif;
+		} else {
+			$data['notifikasi'] = 0;
+		} 
 		$this->load->view('template/header',$data);
 		$this->load->view('template/navbar',$data);
 		$this->load->view('detail_barang',$data);
