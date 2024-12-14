@@ -10,6 +10,7 @@ class Dashboard extends CI_Controller {
 	{
 		$data['kategori'] = $this->Model_kategori->ambil_data()->result();
 		$this->Model_order->auto_cancel_orders();
+		$this->Model_order->auto_done_orders();
 		$data['barang'] = $this->Model_barang->ambil_data_all2()->result();
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['favorit'] = $this->Model_kategori->ambil_data_favorit()->result();
@@ -201,6 +202,7 @@ class Dashboard extends CI_Controller {
 		$data['invoice'] = $this->Model_invoice->detail_invoice($id)->result();
 		$data['pesanan'] = $this->Model_invoice->detail_pesanan($id)->result();
 		$id_user = $data['user']['id_user'];
+		$data['id_invoice_ini'] = $id;
         $hitung = $this->Model_chat->notif2($id_user)->result();
         $jumlah_notif = 0;
         if(!empty($hitung)){
@@ -214,6 +216,12 @@ class Dashboard extends CI_Controller {
 		$this->load->view('detail_invoice',$data);
 		$this->load->view('template/footer');
 	}
+	public function cetak_invoice($id){
+		$data['invoice'] = $this->Model_invoice->detail_invoice($id)->result();
+		$data['pesanan'] = $this->Model_invoice->detail_pesanan($id)->result();
+		$this->load->view('cetak/pdf_invoice', $data);
+	}
+	
 	public function lihat_kategori($id)
 	{
 		$data['judul_kategori'] = $id;
@@ -781,7 +789,7 @@ class Dashboard extends CI_Controller {
 
 			$this->session->set_flashdata('message', '<div class="alert
 			alert-success" role="alert">Alamat Berhasil ditambahkan!</div>');
-			redirect('dashboard/user');
+			redirect('dashboard/pesanan_user/'.$id_user);
 		}
 	}
 }

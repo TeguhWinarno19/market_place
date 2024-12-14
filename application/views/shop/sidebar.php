@@ -16,7 +16,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="<?= base_url('dashboard') ?>">
+                <a class="nav-link" href="<?= base_url('shop/dashboard') ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
@@ -60,11 +60,6 @@
                 <a class="nav-link" href="<?= base_url('shop/pencairan') ?>">
                     <i class=" fas fa-check-circle"></i>
                     <span>List Pencairan Dana</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-dollar-sign"></i>
-                    <span>Hampers</span></a>
             </li>
 
             <!-- Divider -->

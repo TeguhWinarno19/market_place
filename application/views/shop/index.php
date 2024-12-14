@@ -4,9 +4,8 @@
                 <h3>Barang Saya</h3>
             </div>
             <div class="col-6 text-right">
-                <a href="<?= base_url('laporan/cetak_laporan_pinjam'); ?>" class="btn btn-primary mb-3"><i class="fas fa-print"></i> </a>
-                <a href="<?= base_url('laporan/laporan_pinjam_pdf'); ?>" class="btn btn-warning mb-3"><i class="far fa-file-pdf"></i> </a>
-                <a href="<?= base_url('laporan/export_excel_pinjam'); ?>" class="btn btn-success mb-3"><i class="far fa-file-excel"></i> </a>
+                <a href="<?= base_url('shop/cetak_data_barang/'.$toko_id); ?>" class="btn btn-primary mb-3"><i class="fas fa-print"></i> Cetak Data</a>
+                <a href="<?= base_url('shop/export_excel_barang/'.$toko_id); ?>" class="btn btn-success mb-3"><i class="far fa-file-excel"></i> Export Excell</a>
             </div>
         </div>
     <hr>
@@ -18,7 +17,7 @@
             <?php
             if(!empty($barang)){ ?>
             <?php foreach ($barang as $brg) : ?>
-                <div class="col-lg-3 col-md-4 col-sm-4 col-6 mb-2">
+                <div class="col-lg-2 col-md-4 col-sm-4 col-6 mb-2">
                     <div class="card shadow-sm">
                         <!--tips: add .text-center,.text-right to the .card to change card text alignment-->
                         <img src="<?php echo base_url('/assets/img/product/'.$brg->gambar) ?>" class="card-img-top" alt="...">
@@ -26,7 +25,7 @@
                             <h6>
                                 <small>
                                     <?php 
-                                        $max_length = 20;
+                                        $max_length = 13;
                                         if(strlen($brg->nama_barang) > $max_length) {
                                             echo htmlspecialchars(substr($brg->nama_barang, 0, $max_length) . '...');
                                         } else {
@@ -48,17 +47,9 @@
                                     <?= $brg->kategori?>
                                 </small>
                             </h6>
-                            <div class="row justify-content-between">
-                                <div class="col-4 text-center">
-                                    <?php echo anchor('shop/detail_barang/'.$brg->id_barang,'<div class="btn btn-success btn-sm"><i class="fas fa-search-plus"></i></div>') ?>
-                                </div>
-                                <div class="col-4 text-center">
-                                    <?php echo anchor('shop/edit_barang/' .$brg->id_barang, '<div class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></div>' ) ?>
-                                </div>
-                                <div class="col-4 text-center">
-                                    <?php echo anchor('shop/hapus_barang/' .$brg->id_barang, '<div class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></div>')?>
-                                </div>
-                            </div>
+                            <?php echo anchor('shop/detail_barang/'.$brg->id_barang,'<div class="btn btn-success btn-block btn-sm mb-1"><i class="fas fa-search-plus"> </i> Lihat Detail</div>') ?>
+                            <?php echo anchor('shop/edit_barang/' .$brg->id_barang, '<div class="btn btn-primary btn-block btn-sm mb-1"><i class="fa fa-edit"></i> EditBarang</div>' ) ?>
+                            <?php echo anchor('shop/hapus_barang/' .$brg->id_barang, '<div class="btn btn-danger btn-block btn-sm mb-1"><i class="fa fa-trash"></i > Hapus</div>')?>
                         </div>
                     </div>
                 </div>

@@ -5,7 +5,7 @@
                 <div class="card-body">
                     <h3>Pengajuan Klaim Dana</h3>
                     <hr>
-                    <table class="table table-striped">
+                    <table class="table table-bordered table-hover">
                         <tr>
                             <td>ID Order</td>
                             <td>Tanggal Transaksi</td>

@@ -2,7 +2,10 @@
 
 class Model_kategori extends CI_Model{
     Public function ambil_data(){
-        return $this->db->get('kategori');
+        $this->db->select('*');
+        $this->db->from('kategori');
+        $this->db->where('status_kategori', '');
+        return $this->db->get();
     }
     public function tambah_kategori_favorit($data,$table){
         $this->db->insert($table,$data);

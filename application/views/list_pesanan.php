@@ -46,7 +46,7 @@
                             <?php if ($no > 1){?>
                                 <p class="mt-3">+<?= $no-1 ?>barang lainnya</p>
                             <?php }?>
-                            <h6>Total Belanja</h6>
+                            <h6 class="mt-2">Total Belanja</h6>
                             <h6><strong>Rp. <?= $total_belanja + 16000 ?></strong></h6>
                         </div>
                     </div>

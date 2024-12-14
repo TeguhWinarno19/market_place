@@ -12,6 +12,17 @@ class Model_invoice extends CI_Model{
         $this->db->order_by('transaksi.id_transaksi','DESC');
         return $this->db->get();
     }
+    Public function all_invoice()
+    {
+        $this->db->select('*');
+        $this->db->from('transaksi');
+        $this->db->join('user','user.id_user = transaksi.id_user');
+        $this->db->join('alamat','alamat.id_alamat = transaksi.id_alamat');
+        $this->db->join('kota','kota.id_kota = alamat.id_kota');
+        $this->db->join('provinsi','provinsi.id_provinsi = alamat.id_provinsi');
+        $this->db->order_by('transaksi.id_transaksi','DESC');
+        return $this->db->get();
+    }
     public function detail_invoice($where){
         $this->db->select('*');
         $this->db->from('transaksi');

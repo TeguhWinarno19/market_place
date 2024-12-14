@@ -15,7 +15,7 @@
             <div class="row">
                 <a href="<?= base_url('shop/beranda/'.$toko->id_toko) ?>" class="btn btn-link text-decoration-none text-black-50">Beranda</a>
                 <a href="<?= base_url('shop/detail_toko_produk/'.$toko->id_toko) ?>" class="btn btn-link text-decoration-none text-black-50">Produk</a>
-                <a href="<?= base_url('shop/beranda/'.$toko->id_toko) ?>" class="btn btn-link text-decoration-none text-black-50">Ulasan</a>
+                <a href="<?= base_url('shop/detail_toko_ulasan/'.$toko->id_toko) ?>" class="btn btn-link text-decoration-none text-black-50">Ulasan</a>
             </div>
         </div>
     </div>

@@ -1,18 +1,21 @@
-<div class="comtainer-fluid" style=" padding-top: 90px;">
+<div class="container-fluid">
     <div class="card">
         <h5 class="card-header">Invoice Saya</h5>
         <div class="card-body">
             <?php 
             if(!empty($invoice)){ ?>
-            <table class="table">
-                <tr>
-                    <th>ID Invoice</th>
-                    <th>Penerima</th>
-                    <th>Alamat</th>
-                    <th>Waktu Pesanan</th>
-                    <th>Detail</th>
-                </tr>
+            <table class="table table-bordered table-hover table-responsive-lg">
+                <thead class="thead-dark">                
+                    <tr>
+                        <th>ID Invoice</th>
+                        <th>Penerima</th>
+                        <th>Alamat</th>
+                        <th>Waktu Pesanan</th>
+                        <th>Detail</th>
+                    </tr>
+                </thead>
             <?php foreach ($invoice as $i) : ?>
+                <tbody>
                 <tr>
                     <td><?= $i->id_transaksi ?></td>
                     <td><?= $i->nama_penerima ?></td>
@@ -24,6 +27,7 @@
                         </a>
                     </td>
                 </tr>
+                </tbody>
             <?php endforeach ?>
             </table>
             <?php } else {?>

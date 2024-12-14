@@ -9,15 +9,140 @@ class Admin extends CI_Controller {
     public function index(){
         $data['title'] = 'Administrator';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $all_user = $this->Model_user->tampil_data()->result();
+        $jumlah_user = 0;
+        $user_aktif = 0;
+        $user_admin = 0;
+        $toko_toktok = 0;
+        foreach ($all_user as $u) :
+            if($u->aktif == 1){$user_aktif = $user_aktif+1;}
+            if($u->role == 1){$user_admin = $user_admin+1;}
+            $jumlah_user = $jumlah_user+1;
+            $toko_user = $this->Model_toko->ambil_toko_by_user($u->id_user);
+            if(!empty($toko_user)){
+                $toko_toktok = $toko_toktok+1;
+            }
+        endforeach;
+        $total_barang_count = 0;
+        $total_barang_array = $this->Model_barang->ambil_data_all2()->result();
+        foreach ($total_barang_array as $b):
+            $total_barang_count = $total_barang_count + 1;
+        endforeach;
+        $total_pesanan_count = 0;
+        $total_pesanan_array = $this->Model_order->all_pesanan()->result();
+        foreach ($total_pesanan_array as $o):
+            $total_pesanan_count = $total_pesanan_count + 1;
+        endforeach;
+        $selesai = 0;
+        $proses = 0;
+        $batal = 0;
+        $waiting = 0;
+        $dikirim = 0;
+        $tiba = 0;
+        foreach ($total_pesanan_array as $o):
+            if ($o->status_pesanan == 'Batal'){
+                $batal++;
+            } else if($o->status_pesanan == 'Diproses'){
+                $proses++;
+            } else if($o->status_pesanan == 'Dikirim'){
+                $dikirim++;
+            } else if($o->status_pesanan == 'Tiba Tujuan'){
+                $tiba++;
+            } else if($o->status_pesanan == 'Menunggu Konfirmasi'){
+                $waiting;
+            } else {
+                $selesai++;
+            }
+        endforeach;
+        $data['menunggu_value']= $waiting;
+        $data['proses_value']= $proses;
+        $data['dikirim_value']= $dikirim;
+        $data['tiba_value']= $tiba;
+        $data['selesai_value']= $selesai;
+        $data['batal_value']= $batal;
+        $data['total_barang_pesan'] = $total_pesanan_count;
+        $data['jumlah_toktok'] = $toko_toktok;
+        $data['total_pengguna'] = $jumlah_user;
+        $data['barang_count'] = $total_barang_count;
+        $data['top_selling_items'] = $this->Model_barang->get_top_selling_items();
+        $data['labels_user_aktif'] = json_encode(['User aktif', 'User Nonaktif']);
+        $data['values_user_aktif'] = json_encode([$user_aktif, $jumlah_user-$user_aktif]);
+        $data['labels_user_role'] = json_encode(['admin', 'User']);
+        $data['values_user_role'] = json_encode([$user_admin, $jumlah_user-$user_admin]);
+        $data['labels_user_toko'] = json_encode(['User punya toko', 'User tanpa toko']);
+        $data['values_user_toko'] = json_encode([$toko_toktok, $jumlah_user-$toko_toktok]);
+        $data['labels_pesanan'] = json_encode(['order selesai', 'order batal','waiting Konfirmation','sedang dikirim','Tiba tujuan','Diproses']);
+        $data['values_pesanan'] = json_encode([$selesai, $batal, $waiting,$dikirim,$tiba,$proses]);
         $this->load->view('admin/header', $data);
         $this->load->view('admin/sidebar', $data);
         $this->load->view('admin/topbar', $data);
+        $this->load->view('admin/dashboard', $data);
         $this->load->view('admin/footer', $data);
     }
+    public function ubah_nonaktif($id){
+        $data = array(
+            'aktif'      => '0'
+        );
+        $where = array(
+            'id_user' => $id
+        );
+        $this->Model_user->update_data($where,$data,'user');
+        redirect('admin/user_management');
+    }
+    public function ubah_nonaktif_barang($id){
+        $data = array(
+            'status_barang'      => 'nonaktif'
+        );
+        $where = array(
+            'id_barang' => $id
+        );
+        $this->Model_user->update_data($where,$data,'barang');
+        redirect('admin/product_management');
+    }
+    public function ubah_nonaktif_shop($id){
+        $data = array(
+            'status'      => '1'
+        );
+        $where = array(
+            'id_toko' => $id
+        );
+        $this->Model_user->update_data($where,$data,'toko');
+        redirect('admin/shop_management');
+    }
+    public function ubah_aktif($id){
+        $data = array(
+            'aktif'      => '1'
+        );
+        $where = array(
+            'id_user' => $id
+        );
+        $this->Model_user->update_data($where,$data,'user');
+        redirect('admin/user_management');
+    }
+    public function ubah_aktif_barang($id){
+        $data = array(
+            'status_barang'      => 'aktif'
+        );
+        $where = array(
+            'id_barang' => $id
+        );
+        $this->Model_user->update_data($where,$data,'barang');
+        redirect('admin/product_management');
+    }
+    public function ubah_aktif_shop($id){
+        $data = array(
+            'status'      => '0'
+        );
+        $where = array(
+            'id_toko' => $id
+        );
+        $this->Model_user->update_data($where,$data,'toko');
+        redirect('admin/shop_management');
+    }
     public function product_management() {
-        $data['title'] = 'Toko Saya';
+        $data['title'] = 'Admin | Product Management';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		$data['barang'] = $this->Model_barang->ambil_data_all2()->result();
+		$data['barang'] = $this->Model_barang->ambil_data_all()->result();
         $this->load->view('admin/header', $data);
         $this->load->view('admin/sidebar', $data);
         $this->load->view('admin/topbar', $data);
@@ -107,7 +232,7 @@ class Admin extends CI_Controller {
         redirect('admin/kategori');
     }
     public function user_management() {
-        $data['title'] = 'Toko Saya';
+        $data['title'] = 'Admin | User Management';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['pengguna'] = $this->Model_user->tampil_data()->result();
         $this->load->view('admin/header', $data);
@@ -117,7 +242,7 @@ class Admin extends CI_Controller {
         $this->load->view('admin/footer', $data);
     }
     public function shop_management() {
-        $data['title'] = 'Toko Saya';
+        $data['title'] = 'Admin | Shop Management';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['toko'] = $this->Model_toko->tampil_data()->result();
         $this->load->view('admin/header', $data);
@@ -126,6 +251,17 @@ class Admin extends CI_Controller {
         $this->load->view('admin/shop_management', $data);
         $this->load->view('admin/footer', $data);
     }
+    public function cetak_product_management(){
+		$data['barang'] = $this->Model_barang->ambil_data_all()->result();
+		$this->load->view('cetak/cetak_data_barang', $data);
+	}
+    public function excel_product_management() 
+    {
+        $data = array('title' => 'Laporan Data barang',
+        'barang' => $this->Model_barang->ambil_data_all()->result_array());
+        $this->load->view('cetak/export-excel-shop', $data); 
+    }
+
     public function tambah_pilihan($id){
         $data = array(
             'id_barang' => $id
@@ -185,6 +321,17 @@ class Admin extends CI_Controller {
         );
         $this->Model_kategori->update_data($where,$data,'kategori');
         redirect('admin/kategori');
+    }
+    public function hapus_kategori($id)
+    {
+        $data = array(
+            'status_kategori'      => '1'
+        );
+        $where = array(
+            'id_kategori' => $id
+        );
+        $this->Model_kategori->update_data($where,$data,'kategori');
+        redirect('admin/hapus_favorit/'.$id);
     }
     public function edit_user($id)
     {
@@ -274,7 +421,6 @@ class Admin extends CI_Controller {
         $bank                   = $this->input->post('bank');
         $no_rekening            = $this->input->post('no_rekening');
         $status                 = $this->input->post('status');
-
         $upload_image = $_FILES['image']['name'];
         if($upload_image){
             $config['allowed_types'] = 'gif|jpg|png';
@@ -316,6 +462,40 @@ class Admin extends CI_Controller {
         $this->load->view('admin/list_pengajuan',$data);
         $this->load->view('admin/footer',$data);
     }
+    public function order_list(){
+        $data['title'] = 'Admin';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['order'] =  $this->Model_order->all_pesanan()->result();
+        $this->load->view('admin/header',$data);
+        $this->load->view('admin/sidebar',$data);
+        $this->load->view('admin/topbar',$data);
+        $this->load->view('admin/list_order',$data);
+        $this->load->view('admin/footer',$data);
+    }
+    public function invoice_list(){
+        $data['title'] = 'Admin | Invoice List';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['invoice'] =  $this->Model_invoice->all_invoice()->result();
+        $this->load->view('admin/header',$data);
+        $this->load->view('admin/sidebar',$data);
+        $this->load->view('admin/topbar',$data);
+        $this->load->view('admin/list_invoice',$data);
+        $this->load->view('admin/footer',$data);
+    }
+    public function detail_invoice($id)
+	{
+        $data['title'] = 'Detail Invoice';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['invoice'] = $this->Model_invoice->detail_invoice($id)->result();
+		$data['pesanan'] = $this->Model_invoice->detail_pesanan($id)->result();
+		$id_user = $data['user']['id_user'];
+		$data['id_invoice_ini'] = $id;
+		$this->load->view('admin/header',$data);
+		$this->load->view('admin/sidebar',$data);
+		$this->load->view('admin/topbar',$data);
+		$this->load->view('detail_invoice',$data);
+		$this->load->view('admin/footer');
+	}
     public function detail_pesanan($id)
 	{
         $data['title'] = 'Detail Pesanan';
@@ -383,7 +563,7 @@ class Admin extends CI_Controller {
         redirect('admin/klaim_dana');
     }
     public function lihat_bukti($id){
-        $data['title'] = 'Toko Saya';
+        $data['title'] = 'Admin | Bukti Transfer Page';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $id_user = $data['user']['id_user'];
         $data['order'] =  $this->Model_order->klaim_list6($id)->result();
@@ -392,5 +572,78 @@ class Admin extends CI_Controller {
         $this->load->view('admin/topbar',$data);
         $this->load->view('shop/bukti_transfer',$data);
         $this->load->view('admin/footer',$data);
+    }
+    public function edit_barang($id)
+    {
+        $data['title'] = 'Admin | Edit Barang';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $id_user = $data['user']['id_user'];
+        $data['barang'] = $this->Model_barang->detail_barang($id)->result();
+        $this->form_validation->set_rules('nama_barang', 'nama_barang', 'required|trim');
+		$this->form_validation->set_rules('keterangan', 'keterangan', 'required|trim');
+		$this->form_validation->set_rules('id_kategori', 'id_kategori', 'required|trim');
+		$this->form_validation->set_rules('kondisi', 'kondisi', 'required|trim');
+		$this->form_validation->set_rules('harga', 'harga', 'required|trim');
+		$this->form_validation->set_rules('stok', 'stok', 'required|trim');
+        if ($this->form_validation->run()==false){
+        $this->load->view('admin/header', $data);
+        $this->load->view('admin/sidebar', $data);
+        $this->load->view('admin/topbar',$data);
+        $this->load->view('admin/edit_barang', $data);
+        $this->load->view('admin/footer');
+        }
+        else {
+            $this->update();
+        }
+    }
+    public function update()
+    {
+        $id                 = $this->input->post('id_barang');
+        $nama_barang           = $this->input->post('nama_barang');
+        $keterangan         = $this->input->post('keterangan');
+        $id_kategori           = $this->input->post('id_kategori');
+        $harga              = $this->input->post('harga');
+        $kondisi              = $this->input->post('kondisi');
+        $stok               = $this->input->post('stok');
+        $old_image               = $this->input->post('old');
+        $upload_image = $_FILES['image']['name'];
+        if($upload_image){
+            $config['allowed_types'] = 'gif|jpg|png';
+            $config['max_size']     = '2040';
+            $config['upload_path'] = './assets/img/product/';
+            $this->load->library('upload', $config);
+            if ($this->upload->do_upload('image')){
+                if($old_image != 'default.jpg'){
+                    unlink(FCPATH.'assets/img/product/'.$old_image);
+                }
+                $new_image = $this->upload->data('file_name');
+                $this->db->set('gambar', $new_image);
+            }else{
+                echo $this->upload->display_errors();
+            }
+        }
+        $data = array(
+            'nama_barang'      => $nama_barang,
+            'keterangan'    => $keterangan,
+            'id_kategori'      => $id_kategori,
+            'harga'         => $harga,
+            'kondisi'         => $kondisi,
+            'stok'          => $stok
+        );
+        $where = array(
+            'id_barang' => $id
+        );
+        $this->Model_barang->update_data($where,$data,'barang');
+        redirect('admin/product_management');
+    }
+    public function profile(){
+        $data['title'] = 'Admin | Profile Admin';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();	
+		$id_user = $data['user']['id_user'];
+        $this->load->view('admin/header', $data);
+		$this->load->view('admin/sidebar', $data);
+		$this->load->view('admin/topbar', $data);
+		$this->load->view('admin/admin_profile', $data); // Pastikan 'user' view bisa menampilkan $toko
+		$this->load->view('admin/footer');
     }
 }

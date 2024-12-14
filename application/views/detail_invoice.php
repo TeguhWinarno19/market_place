@@ -2,8 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 text-right">
-                <a href="#" class="btn btn-primary"><i class="fas fa-print"></i> Cetak invoice</a>
-                <a href="#" class="btn btn-warning"><i class="fas fa-download"></i> Unduh Invoice</a>
+                <a href="<?= base_url('dashboard/cetak_invoice/'.$id_invoice_ini) ?>" class="btn btn-primary"><i class="fas fa-print"></i> Cetak invoice</a>
             </div>
         </div>
         <hr>
@@ -14,7 +13,8 @@
                         <div class="row">
                             <img src="<?= base_url()?>assets/img/Logokita.jpeg" alt="" style="width:12rem;">
                             <div class="">
-                                <h5>Invoice <?= $i->id_transaksi ?></h5>
+                                <h6><small><?= $i->tanggal_transaksi ?></small></h6>
+                                <hr>
                                 <h6>Penerima: <?= $i->nama_penerima?></h6>
                                 <h6><?= $i->alamat.", RT:". $i->rt.", RW:". $i->rw.", Kodepos:". $i->kodepos?></h6>
                                 <h6><?= $i->kota.', '.$i->provinsi?></h6>

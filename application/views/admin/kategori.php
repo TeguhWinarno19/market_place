@@ -31,7 +31,7 @@
                                 <?php echo anchor('admin/hapus_favorit/' .$ktg->id_kategori, '<div class="btn btn-outline-secondary btn-sm "><i class="fa fa-fw fa-star-half"></i></div>' ) ?>
                             <?php } ?>
                                 <?php echo anchor('admin/edit_kategori/' .$ktg->id_kategori, '<div class="btn btn-outline-primary btn-sm"><i class="fa fa-fw fa-edit"></i></div>' ) ?>
-                                <?php echo anchor('admin/data_kategori/hapus/' .$ktg->id_kategori, '<div class="btn btn-outline-danger btn-sm"><i class="fa fa-fw fa-trash"></i></div>')?>
+                                <?php echo anchor('admin/hapus_kategori/' .$ktg->id_kategori, '<div class="btn btn-outline-danger btn-sm"><i class="fa fa-fw fa-trash"></i></div>')?>
                     </div>
                 </div>
             <?php endforeach;?>

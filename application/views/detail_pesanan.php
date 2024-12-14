@@ -107,9 +107,6 @@
                             </div>
                             <div class="row">
                                 <div class="col-12 text-right">
-                                <?php if($p->status_pesanan == "Tiba Tujuan"){?> 
-                                    <a class="btn btn-danger" href="#">Komplain</a>
-                                <?php } ?>
                                 <?php if($p->status_pesanan == "Selesai" && $p->ulasan_lock == 0 ) {?>
                                     <a class="btn btn-success" href="<?= base_url('dashboard/ulasan_produk/'.$p->id_detail) ?>">Berikan Penilaian</a>
                                 <?php } ?>

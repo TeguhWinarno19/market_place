@@ -14,6 +14,15 @@
                     <span class="badge badge-danger badge-counter"><?= $notifikasi ?></span>
                 </a>
             </li>
+            <li class="nav-item dropdown no-arrow d-sm-none">
+                <a class="nav-link dropdown-toggle" href="<?= base_url('chatting/toko') ?>"  aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-envelope fa-fw"></i>
+                    <span class="badge badge-danger badge-counter"><?= $notifikasi ?></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="messagesDropdownMobile">
+                    <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+                </div>
+            </li>
             <div class="topbar-divider d-none d-sm-block"></div>
 
             <!-- Nav Item - User Information -->
@@ -30,10 +39,6 @@
                     <a class="dropdown-item" href="<?= base_url()?>dashboard/">
                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                         Kembali
-                    </a>
-                    <a class="dropdown-item" href="<?= base_url('user/edit')?>">
-                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Edit Toko
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?= base_url('auth/logout') ?>" data-toggle="modal" data-target="#logoutModal">

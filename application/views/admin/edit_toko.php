@@ -74,8 +74,7 @@
                             <div class="form-group">
                                 <label for="bank"><i class="fas fa-university"></i> Pilih BANK</label>
                                 <select name="bank" id="bank" class="form-control">
-                                    <option value="<?= $toko->bank ?>"><?= $toko->bank ?></option>
-                                    <hr>
+                                    <option value="<?=$toko->bank ?>"><?= $toko->bank ?></option>
                                     <option value="BCA">BCA</option>
                                     <option value="BNI">BNI</option>
                                     <option value="BRI">BRI</option>

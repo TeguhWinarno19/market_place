@@ -96,34 +96,6 @@
                                     <h6><strong>Rp.<?= number_format($p->qty*$p->harga,0,',','.') ?></strong></h6>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-12 text-right">
-                                <?php if($p->status_pesanan == "Tiba Tujuan"){?> 
-                                    <a class="btn btn-danger" href="#">Komplain</a>
-                                <?php } ?>
-                                <?php if($p->status_pesanan == "Selesai" && $p->ulasan_lock == 0 ) {?>
-                                    <a class="btn btn-success" href="<?= base_url('dashboard/ulasan_produk/'.$p->id_detail) ?>">Berikan Penilaian</a>
-                                <?php } ?>
-                                <?php if($p->ulasan_lock == 1){?>
-                                    <div class="card mt-2">
-                                        <div class="card-body">
-                                        <?php $ulasan = $this->Model_order->review_barang($p->id_detail)->result(); ?>
-                                        <?php if(!empty($ulasan)){?>
-                                            <?php foreach($ulasan as $u):?>
-                                                <h6> Oleh : <?= $u->nama_user ?>
-                                                    <?php for ($i = 0; $i < $u->rating; $i++) : ?>
-                                                        <i class="fas fa-star text-warning"></i>
-                                                    <?php endfor; ?>
-                                                </h6>
-                                                <hr>
-                                                <h6><?= $u->ulasan ?></h6>
-                                            <?php endforeach ?>
-                                        <?php }?>
-                                        </div>
-                                    </div>
-                                <?php } ?>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 <?php endforeach ?>

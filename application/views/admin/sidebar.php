@@ -63,13 +63,13 @@
                     <span>Kategori</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('admin/klaim_dana') ?>">
+                <a class="nav-link" href="<?= base_url('admin/invoice_list/') ?>">
                     <i class="fas fa-file-invoice"></i>
                     <span>Invoice List</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('admin/klaim_dana') ?>">
+                <a class="nav-link" href="<?= base_url('admin/order_list') ?>">
                     <i class="fas fa-boxes"></i>
                     <span>Order List</span>
                 </a>
@@ -77,7 +77,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="<?= base_url('admin/klaim_dana') ?>">
                     <i class="fas fa-dollar-sign"></i>
-                    <span>Klaim Dana Toko</span>
+                    <span>Toko Klaim dana</span>
                 </a>
             </li>
             

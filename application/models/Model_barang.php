@@ -51,6 +51,15 @@ class Model_barang extends CI_Model{
         $query = $this->db->get();
         return $query;
     }
+    Public function ambil_data_all(){
+        $this->db->select('*');
+        $this->db->from('barang');
+        $this->db->join('toko','toko.id_toko = barang.id_toko');
+        $this->db->join('kategori','kategori.id_kategori = barang.id_kategori');
+        $this->db->join('kota', 'kota.id_kota = toko.id_kota');
+        $query = $this->db->get();
+        return $query;
+    }
     public function getWishlistCount($id_barang) {
         $this->db->select('COUNT(id_whistlist) as jumlah_disukai');
         $this->db->from('whistlist');
@@ -140,11 +149,29 @@ class Model_barang extends CI_Model{
         $query = $this->db->get();
         return $query;
     }
+    Public function barang_kritis($id){
+        $this->db->select('*');
+        $this->db->from('barang');
+        $this->db->where('id_toko', $id);
+        $this->db->where('status_barang', 'aktif');
+        $this->db->where('stok <', '5');
+        $query = $this->db->get();
+        return $query;
+    }
     public function ulasan_barang($where)
     {
         $this->db->select('*');
         $this->db->from('ulasan_produk');
         $this->db->where('ulasan_produk.id_barang', $where);
         return $this->db->get();       
+    }
+    public function get_top_selling_items() {
+        $this->db->select('order_detail.id_barang, barang.nama_barang,toko.nama_toko ,SUM(qty) AS total_terjual');
+        $this->db->from('order_detail');
+        $this->db->join('barang','barang.id_barang = order_detail.id_barang');
+        $this->db->join('toko','toko.id_toko = barang.id_toko');
+        $this->db->group_by('order_detail.id_barang');
+        $this->db->order_by('total_terjual', 'DESC');
+        return $this->db->get()->result_array();
     }
 }

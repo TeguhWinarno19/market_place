@@ -22,17 +22,9 @@
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                     aria-labelledby="userDropdown">
-                    <a class="dropdown-item" href="<?= base_url('user') ?>">
-                        <i class="fas fa-store fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Profile Toko
-                    </a>
-                    <a class="dropdown-item" href="<?= base_url()?>dashboard/">
+                    <a class="dropdown-item" href="<?= base_url()?>admin/profile/">
                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Akun Saya
-                    </a>
-                    <a class="dropdown-item" href="<?= base_url('user/edit')?>">
-                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Edit Toko
+                        Profile Saya
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?= base_url('auth/logout') ?>" data-toggle="modal" data-target="#logoutModal">

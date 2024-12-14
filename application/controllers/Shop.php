@@ -6,6 +6,59 @@ class Shop extends CI_Controller {
         parent::__construct();
         $this->load->library('form_validation');
     }
+    public function dashboard(){
+        $data['title'] = 'Toko Saya';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $id_user = $data['user']['id_user'];
+        $data['toko'] = $this->Model_toko->joinKategoriToko($id_user);
+        $id_toko = $data['toko']->id_toko;
+        $data['toko_id'] = $data['toko']->id_toko;
+        $data['order'] =  $this->Model_order->pesanan_toko($id_toko)->result();
+        $id_toko = $data['toko']->id_toko;
+        $hitung = $this->Model_chat->notif($id_toko)->result();
+        $jumlah_notif = 0;
+        if(!empty($hitung)){
+            foreach($hitung as $h):
+                $jumlah_notif++;
+            endforeach;
+        }
+        $barangku = $this->Model_barang->toko($id_toko)->result();
+        $barang_count = 0;
+        if(!empty($barangku)){
+            foreach ($barangku as $bg):
+                $barang_count++;
+            endforeach;
+        } else{
+            $barang_count = 0;
+        }
+        $data['barang_count_data'] = $barang_count;
+        $data['notifikasi'] = $jumlah_notif;
+        $pesanan_done = $this->Model_order->pendapatan_toko($id_toko)->result();
+        $pendapatan_toko  = 0;
+        foreach($pesanan_done as $d):
+            $pendapatan_toko = $pendapatan_toko + $d->total_harga - 16000;
+        endforeach;
+        $data['pendapatan_toko_value'] = $pendapatan_toko;
+        $barang_sell_array = $this->Model_order->barang_terjual($id_toko)->result();
+        $barang_sell = 0;
+        foreach($barang_sell_array as $bs):
+            $barang_sell = $barang_sell + $bs->qty;
+        endforeach;
+        $data['barang_sell_value'] = $barang_sell;
+        $menunggu_array = $this->Model_order->order_menunggu($id_toko)->result();
+        $menunggu = 0;
+        foreach($menunggu_array as $m):
+            $menunggu = $menunggu + 1;
+        endforeach;
+        $data['menunggu_value'] = $menunggu;
+        $data['barang_kritis'] = $this->Model_barang->barang_kritis($id_toko)->result();
+        $data['barang_toko'] =  $this->Model_barang->toko($id_toko)->result();
+        $this->load->view('shop/header',$data);
+        $this->load->view('shop/sidebar',$data);
+        $this->load->view('shop/topbar',$data);
+        $this->load->view('shop/dashboard_shop',$data);
+        $this->load->view('shop/footer',$data);
+    }
     public function order_masuk(){
         $data['title'] = 'Toko Saya';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
@@ -272,6 +325,8 @@ class Shop extends CI_Controller {
     }
     public function detail_toko_produk($id)
 	{
+        $data['title'] = 'Toko Saya';
+
 		$data['kategori'] = $this->Model_kategori->ambil_data()->result();
 		$data['barang'] = $this->Model_barang->toko($id)->result();
 		$data['toko'] = $this->Model_toko->toko_by_id($id);
@@ -297,6 +352,78 @@ class Shop extends CI_Controller {
 		$this->load->view('shop/detail_toko_produk',$data);
 		$this->load->view('shop/footer');
 	}
+    public function detail_toko_ulasan($id)
+	{
+        $data['title'] = 'Toko Saya | Ulasan Page';
+		$data['kategori'] = $this->Model_kategori->ambil_data()->result();
+		$data['toko'] = $this->Model_toko->toko_by_id($id);
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $id_toko = $data['toko']->id_toko;
+        $hitung = $this->Model_chat->notif($id_toko)->result();
+        $jumlah_notif = 0;
+        if(!empty($hitung)){
+            foreach($hitung as $h):
+                $jumlah_notif++;
+            endforeach;
+        }
+        $data['ulasan'] = $this->Model_order->ulasan_toko($id_toko)->result();
+        $ulasan_array = $this->Model_order->ulasan_toko($id_toko)->result();
+        $rating = 0;
+        $count_ratting = 0;
+        foreach($ulasan_array as $ua):
+            $rating = $rating + $ua->rating;
+            $count_ratting = $count_ratting + 1;
+        endforeach;
+        $data['overall'] = $rating / $count_ratting;
+        $data['notifikasi'] = $jumlah_notif;
+		$this->load->view('shop/header',$data);
+		$this->load->view('shop/sidebar',$data);
+		$this->load->view('shop/topbar',$data);
+		$this->load->view('shop/detail_toko_ulasan',$data);
+		$this->load->view('shop/footer');
+	}
+    public function edit(){
+        $data['title'] = 'Toko Saya';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $id_user = $data['user']['id_user'];
+        $data['kategori'] = $this->Model_kategori->ambil_data()->result();
+        $data['toko'] = $this->Model_toko->joinKategoriToko($id_user); // Panggil metode dari model
+        $id_toko = $data['toko']->id_toko;
+        $data['toko_id'] = $data['toko']->id_toko;
+        $hitung = $this->Model_chat->notif($id_toko)->result();
+        $jumlah_notif = 0;
+        if(!empty($hitung)){
+            foreach($hitung as $h):
+                $jumlah_notif++;
+            endforeach;
+        }
+        $data['notifikasi'] = $jumlah_notif;
+        $this->form_validation->set_rules('nama_toko', 'nama_toko', 'required|trim');
+		$this->form_validation->set_rules('no_rekening', 'no_rekening', 'required|trim');
+        $this->form_validation->set_rules('bank', 'bank', 'required|trim');
+		$this->form_validation->set_rules('kota', 'kota', 'required|trim');
+        if ($this->form_validation->run()==false){
+            $this->load->view('shop/header',$data);
+            $this->load->view('shop/sidebar',$data);
+            $this->load->view('shop/topbar',$data);
+            $this->load->view('shop/edit_toko',$data);
+            $this->load->view('shop/footer',$data);
+		} else {
+			$data = [
+				'id_user' => htmlspecialchars($this->input->post('id_user', true)),
+				'nama_toko' => htmlspecialchars($this->input->post('nama_toko', true)),
+				'bank' => htmlspecialchars($this->input->post('bank', true)),
+				'no_rekening' => htmlspecialchars($this->input->post('no_rekening', true)),
+				'id_kota' => htmlspecialchars($this->input->post('kota', true)),
+			];
+            $where = array(
+				'id_toko' => htmlspecialchars($this->input->post('id_toko', true))
+            );
+            $this->Model_toko->update_data($where,$data,'toko');
+            redirect('shop/dashboard');
+
+        }
+    }
     public function index(){
         $data['title'] = 'Toko Saya';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
@@ -304,6 +431,7 @@ class Shop extends CI_Controller {
         $data['kategori'] = $this->Model_kategori->ambil_data()->result();
         $data['toko'] = $this->Model_toko->joinKategoriToko($id_user); // Panggil metode dari model
         $id_toko = $data['toko']->id_toko;
+        $data['toko_id'] = $data['toko']->id_toko;
         $hitung = $this->Model_chat->notif($id_toko)->result();
         $jumlah_notif = 0;
         if(!empty($hitung)){
@@ -437,6 +565,14 @@ class Shop extends CI_Controller {
         $data['kategori'] = $this->Model_kategori->ambil_data()->result();
         $data['toko'] = $this->Model_toko->joinKategoriToko($id_user); // Panggil metode dari model
         $id_toko = $data['toko']->id_toko;
+        $hitung = $this->Model_chat->notif($id_toko)->result();
+        $jumlah_notif = 0;
+        if(!empty($hitung)){
+            foreach($hitung as $h):
+                $jumlah_notif++;
+            endforeach;
+        }
+        $data['notifikasi'] = $jumlah_notif;
         $data['barang'] = $this->Model_barang->detail_barang($id)->result();
         $this->form_validation->set_rules('nama_barang', 'nama_barang', 'required|trim');
 		$this->form_validation->set_rules('keterangan', 'keterangan', 'required|trim');
@@ -447,6 +583,7 @@ class Shop extends CI_Controller {
         if ($this->form_validation->run()==false){
         $this->load->view('shop/header', $data);
         $this->load->view('shop/sidebar', $data);
+        $this->load->view('shop/topbar',$data);
         $this->load->view('shop/edit_barang', $data);
         $this->load->view('shop/footer');
         }
@@ -585,4 +722,25 @@ class Shop extends CI_Controller {
         redirect('shop/klaim_list');
 
     }
+    public function cetak_data_barang($id){
+		$data['barang'] = $this->Model_barang->toko($id)->result();
+		$this->load->view('cetak/cetak_data_barang', $data);
+	}
+    public function export_excel_barang($id) 
+    {
+        $data = array('title' => 'Laporan barang',
+        'barang' => $this->Model_barang->toko($id)->result_array());
+        $this->load->view('cetak/export-excel-shop', $data); 
+    }
+    public function export_barang_habis($id) 
+    {
+        $data = array('title' => 'Laporan Barang Habis',
+        'barang' => $this->Model_barang->barang_kritis($id)->result_array());
+        $this->load->view('cetak/export-excel-shop', $data); 
+    }
+    public function cetak_barang_habis($id){
+        $data['barang_kritis'] = $this->Model_barang->barang_kritis($id)->result();
+		$this->load->view('cetak/cetak_habis', $data);
+	}
+    
 }
