@@ -24,30 +24,31 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Nama Barang</th>
-                <th>Keterangan</th>
-                <th>Qty</th>
-                <th>Harga</th>
+                <th>Nama User</th>
+                <th>Email</th>
+                <th>No Telepon</th>
+                <th>Role</th>
+                <th>Waktu Daftar</th>
             </tr>
         </thead>
         <tbody>
             <?php $no = 1 ?>
-            <?php foreach($barang as $b) :?>
+            <?php foreach($pengguna as $p) :?>
             <tr>
                 <td scope="row"><?= $no ?></td>
-                <td><?= $b->nama_barang ?></td>
+                <td><?= $p->nama ?></td>
+                <td><?= $p->email ?></td>
+                <td><?= $p->no_telepon ?></td>
                 <td>
-                    <?php
-                    $max_length = 120;
-                    if(strlen($b->keterangan) > $max_length) {
-                        echo htmlspecialchars(substr($b->keterangan, 0, $max_length) . '...');
-                    } else {
-                        echo htmlspecialchars($b->keterangan);
-                    }
-                    ?>
+                    <?php if($p->role == "1"){
+                    echo "Admin";
+                    } else{
+                        echo "User"; 
+                    }?>
                 </td>
-                <td><?= $b->stok ?></td>
-                <td><?= $b->harga ?></td>
+                <td>
+                <p class="card-text"><small class="text-muted"><?= date('d F Y', $p->waktu_daftar); ?></small></p>
+                </td>
                 <?php $no++ ?>
             </tr>
             <?php endforeach ?>

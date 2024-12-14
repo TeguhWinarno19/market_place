@@ -82,14 +82,6 @@
             </li>
             
             <hr class="sidebar-divider d-none d-md-block">
-            <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('admin/klaim_dana') ?>">
-                    <i class="fas fa-file-invoice"></i>
-                    <span>Laporan Invoice</span>
-                </a>
-            </li>
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">

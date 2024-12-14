@@ -261,7 +261,14 @@ class Admin extends CI_Controller {
         'barang' => $this->Model_barang->ambil_data_all()->result_array());
         $this->load->view('cetak/export-excel-shop', $data); 
     }
-
+    public function cetak_user_management(){
+		$data['pengguna'] = $this->Model_user->tampil_data()->result();;
+		$this->load->view('cetak/cetak_data_user', $data);
+	}
+    public function cetak_shop_management(){
+		$data['shop'] = $this->Model_toko->tampil_data()->result();;
+		$this->load->view('cetak/cetak_data_toko', $data);
+	}
     public function tambah_pilihan($id){
         $data = array(
             'id_barang' => $id
@@ -645,5 +652,54 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/topbar', $data);
 		$this->load->view('admin/admin_profile', $data); // Pastikan 'user' view bisa menampilkan $toko
 		$this->load->view('admin/footer');
+    }
+    public function changepassword()
+    {
+        $data['title'] = 'Change Password';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $id_user = $data['user']['id_user'];
+        $hitung = $this->Model_chat->notif2($id_user)->result();
+        $jumlah_notif = 0;
+        if(!empty($hitung)){
+            foreach($hitung as $h):
+                $jumlah_notif = $jumlah_notif+1;
+            endforeach;
+        }
+        $data['notifikasi'] = $jumlah_notif;
+        $this->form_validation->set_rules('current_password','Current Password','required|trim');
+        $this->form_validation->set_rules('new_password1','New Password','required|trim|min_length[3]|matches[new_password2]');
+        $this->form_validation->set_rules('new_password2','Confirm Password','required|trim|min_length[3]|matches[new_password1]');
+        if($this->form_validation->run() == false){
+            $this->load->view('admin/header',$data);
+            $this->load->view('admin/sidebar',$data);
+            $this->load->view('admin/topbar',$data);
+            $this->load->view('admin/ubah_password',$data);
+            $this->load->view('admin/footer',$data);
+        }
+        else {
+            $current_password   = $this->input->post('current_password');
+            $new_password       = $this->input->post('new_password1');
+            if(!password_verify($current_password, $data['user']['password'])){
+                $this->session->set_flashdata('message', '<div class="alert
+                alert-danger" role="alert">Wrong Password</div>');
+                redirect('admin/changepassword');
+            } else {
+                if($current_password == $new_password){
+                    $this->session->set_flashdata('message', '<div class="alert
+                    alert-danger" role="alert">New Password cannot same!</div>');
+                    redirect('admin/changepassword');
+                }
+                else{
+                    $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
+                    $this->db->set('password', $password_hash);
+                    $this->db->where('email', $this->session->userdata('email'));
+                    $this->db->update('user');
+
+                    $this->session->set_flashdata('message', '<div class="alert
+                    alert-success" role="alert">Password changed!</div>');
+                    redirect('admin/changepassword');
+                }
+            }
+        }
     }
 }

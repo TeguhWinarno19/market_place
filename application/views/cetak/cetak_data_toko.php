@@ -18,36 +18,37 @@
 </style>
 </head>
 <body>
-    <h3><center>Data Barang</center></h3>
+    <h3><center>Data Toko</center></h3>
     <hr>
     <table class="table-data">
         <thead>
             <tr>
                 <th>No</th>
-                <th>Nama Barang</th>
-                <th>Keterangan</th>
-                <th>Qty</th>
-                <th>Harga</th>
+                <th>Nama Toko</th>
+                <th>Pemilik</th>
+                <th>Kota</th>
+                <th>Status</th>
+                <th>Waktu Daftar</th>
             </tr>
         </thead>
         <tbody>
             <?php $no = 1 ?>
-            <?php foreach($barang as $b) :?>
+            <?php foreach($shop as $s) :?>
             <tr>
                 <td scope="row"><?= $no ?></td>
-                <td><?= $b->nama_barang ?></td>
+                <td><?= $s->nama_toko ?></td>
+                <td><?= $s->nama ?></td>
+                <td><?= $s->kota ?></td>
                 <td>
-                    <?php
-                    $max_length = 120;
-                    if(strlen($b->keterangan) > $max_length) {
-                        echo htmlspecialchars(substr($b->keterangan, 0, $max_length) . '...');
-                    } else {
-                        echo htmlspecialchars($b->keterangan);
-                    }
-                    ?>
+                    <?php if($s->status == "1"){
+                    echo "Nonaktif";
+                    } else{
+                        echo "Aktif"; 
+                    }?>
                 </td>
-                <td><?= $b->stok ?></td>
-                <td><?= $b->harga ?></td>
+                <td>
+                <p class="card-text"><small class="text-muted"><?= date('d F Y', $s->waktu_daftar); ?></small></p>
+                </td>
                 <?php $no++ ?>
             </tr>
             <?php endforeach ?>

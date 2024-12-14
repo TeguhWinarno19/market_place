@@ -17,7 +17,7 @@
                             <hr>
                             <div class="row">
                                 <a class="btn btn-primary m-1" href="<?= base_url('admin/edit_user/'.$user['id_user'])?>">Edit Profile</a>
-                                <a class="btn btn-danger m-1" href="<?= base_url()?>user_set/changepassword">Ubah Password</a>
+                                <a class="btn btn-danger m-1" href="<?= base_url()?>admin/changepassword">Ubah Password</a>
                             </div>
                         </div>
                         <div class="card-body">
