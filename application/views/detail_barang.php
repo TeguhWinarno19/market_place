@@ -1,6 +1,4 @@
 <div class="container-fluid">
-    <h3>Detail Barang</h3>
-    <hr>
     <?php foreach ($barang as $b) : ?>
         <div class="row justify-content-center">
             <div class="col col-lg-3 col-md-4 col-sm-6 col-12 mt-5 align-items-center text-center">

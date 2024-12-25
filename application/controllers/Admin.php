@@ -4,10 +4,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Admin extends CI_Controller {
     public function __construct(){
         parent::__construct();
+        is_logged_in();
         $this->load->library('form_validation');
     }
     public function index(){
-        $data['title'] = 'Administrator';
+        $data['title'] = 'Administrator | Dashboard';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $all_user = $this->Model_user->tampil_data()->result();
         $jumlah_user = 0;
@@ -140,7 +141,7 @@ class Admin extends CI_Controller {
         redirect('admin/shop_management');
     }
     public function product_management() {
-        $data['title'] = 'Admin | Product Management';
+        $data['title'] = 'Administrator | Product Management';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['barang'] = $this->Model_barang->ambil_data_all()->result();
         $this->load->view('admin/header', $data);
@@ -151,7 +152,7 @@ class Admin extends CI_Controller {
     }
 
     public function kategori(){
-        $data['title'] = 'Administrator';
+        $data['title'] = 'Administrator | Kategori';
         $data['kategori'] = $this->Model_kategori->ambil_data()->result();
         $data['favorit'] = $this->Model_kategori->ambil_data_favorit()->result();
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
@@ -162,7 +163,7 @@ class Admin extends CI_Controller {
         $this->load->view('admin/footer', $data);
     }
     public function produk_pilihan(){
-        $data['title'] = 'Administrator';
+        $data['title'] = 'Administrator | Produk Pilihan';
 		$data['barang'] = $this->Model_barang->ambil_data_all2()->result();
 		$data['pilihan'] = $this->Model_barang->ambil_data_all3()->result();
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
@@ -174,7 +175,7 @@ class Admin extends CI_Controller {
     }
 
     public function tambah_aksi(){
-        $data['title'] = 'Admin';
+        $data['title'] = 'Administrator';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $kode = $this->Model_kode->generate_kode('kategori', 'id_kategori', 'KTG', 4);
         $nama_kategori = $this->input->post('nama_kategori');
@@ -232,7 +233,7 @@ class Admin extends CI_Controller {
         redirect('admin/kategori');
     }
     public function user_management() {
-        $data['title'] = 'Admin | User Management';
+        $data['title'] = 'Administrator | User Management';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['pengguna'] = $this->Model_user->tampil_data()->result();
         $this->load->view('admin/header', $data);
@@ -242,7 +243,7 @@ class Admin extends CI_Controller {
         $this->load->view('admin/footer', $data);
     }
     public function shop_management() {
-        $data['title'] = 'Admin | Shop Management';
+        $data['title'] = 'Administrator | Shop Management';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['toko'] = $this->Model_toko->tampil_data()->result();
         $this->load->view('admin/header', $data);
@@ -283,7 +284,7 @@ class Admin extends CI_Controller {
     }
     public function edit_kategori($id)
     {
-        $data['title'] = 'Kategori Page';
+        $data['title'] = 'Administrator | Edit Kategori';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['kategori'] = $this->Model_kategori->detail_kategori($id)->result();
         $this->form_validation->set_rules('nama_kategori', 'nama_kategori', 'required|trim');
@@ -342,7 +343,7 @@ class Admin extends CI_Controller {
     }
     public function edit_user($id)
     {
-        $data['title'] = 'Edit User Page';
+        $data['title'] = 'Administrator | Edit Pengguna';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['pengguna'] = $this->Model_user->detail_user($id)->result();
         $this->form_validation->set_rules('nama_user', 'nama_user', 'required|trim');
@@ -399,7 +400,7 @@ class Admin extends CI_Controller {
     }
     public function edit_toko($id)
     {
-        $data['title'] = 'Edit User Page';
+        $data['title'] = 'Administrator | Edit Toko';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['toko'] = $this->Model_toko->toko_by_id($id);
         $this->form_validation->set_rules('toko', 'toko', 'required|trim');
@@ -459,7 +460,7 @@ class Admin extends CI_Controller {
         redirect('admin/shop_management');
     }
     public function klaim_dana(){
-        $data['title'] = 'Admin';
+        $data['title'] = 'Administrator | Laman Klaim dana';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['order'] =  $this->Model_order->klaim_list2()->result();
         $data['order1'] =  $this->Model_order->klaim_list3()->result();
@@ -470,7 +471,7 @@ class Admin extends CI_Controller {
         $this->load->view('admin/footer',$data);
     }
     public function order_list(){
-        $data['title'] = 'Admin';
+        $data['title'] = 'Administrator | Daftar Order';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['order'] =  $this->Model_order->all_pesanan()->result();
         $this->load->view('admin/header',$data);
@@ -480,7 +481,7 @@ class Admin extends CI_Controller {
         $this->load->view('admin/footer',$data);
     }
     public function invoice_list(){
-        $data['title'] = 'Admin | Invoice List';
+        $data['title'] = 'Administrator | Daftar Invoice';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['invoice'] =  $this->Model_invoice->all_invoice()->result();
         $this->load->view('admin/header',$data);
@@ -491,7 +492,7 @@ class Admin extends CI_Controller {
     }
     public function detail_invoice($id)
 	{
-        $data['title'] = 'Detail Invoice';
+        $data['title'] = 'Administrator | Detail Invoice';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['invoice'] = $this->Model_invoice->detail_invoice($id)->result();
 		$data['pesanan'] = $this->Model_invoice->detail_pesanan($id)->result();
@@ -505,7 +506,7 @@ class Admin extends CI_Controller {
 	}
     public function detail_pesanan($id)
 	{
-        $data['title'] = 'Detail Pesanan';
+        $data['title'] = 'Administrator | Detail Pesanan';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $id_user = $data['user']['id_user'];
         $data['invoice'] = $this->Model_order->data_invoice($id)->result();
@@ -518,7 +519,7 @@ class Admin extends CI_Controller {
 	}
     public function bukti_transfer($id)
 	{
-        $data['title'] = 'Bukti Transfer';
+        $data['title'] = 'Administrator | Input Bukti Transfer';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['id_order'] = $id;
         $this->load->view('admin/header',$data);
@@ -570,7 +571,7 @@ class Admin extends CI_Controller {
         redirect('admin/klaim_dana');
     }
     public function lihat_bukti($id){
-        $data['title'] = 'Admin | Bukti Transfer Page';
+        $data['title'] = 'Administrator | Bukti Transfer';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $id_user = $data['user']['id_user'];
         $data['order'] =  $this->Model_order->klaim_list6($id)->result();
@@ -582,7 +583,7 @@ class Admin extends CI_Controller {
     }
     public function edit_barang($id)
     {
-        $data['title'] = 'Admin | Edit Barang';
+        $data['title'] = 'Administrator | Edit Barang';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $id_user = $data['user']['id_user'];
         $data['barang'] = $this->Model_barang->detail_barang($id)->result();
@@ -644,7 +645,7 @@ class Admin extends CI_Controller {
         redirect('admin/product_management');
     }
     public function profile(){
-        $data['title'] = 'Admin | Profile Admin';
+        $data['title'] = 'Administrator | Profile Admin';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();	
 		$id_user = $data['user']['id_user'];
         $this->load->view('admin/header', $data);
@@ -655,7 +656,7 @@ class Admin extends CI_Controller {
     }
     public function changepassword()
     {
-        $data['title'] = 'Change Password';
+        $data['title'] = 'Administrator | Ubah Password';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $id_user = $data['user']['id_user'];
         $hitung = $this->Model_chat->notif2($id_user)->result();

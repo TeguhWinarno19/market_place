@@ -57,7 +57,7 @@ class Auth extends CI_Controller {
             else
             {
                 $this->session->set_flashdata('message', '<div class="alert
-                alert-danger" role="alert">This Email has not activated!</div>');
+                alert-danger" role="alert">Akun anda tidak aktif! Silahkan Hubungi admin</div>');
                 redirect('auth');    
             }
         }
@@ -120,5 +120,13 @@ class Auth extends CI_Controller {
         alert-success" role="alert">You have been logged out!</div>');
         redirect('auth');
         
+    }
+    public function blocked()
+    {
+        $data['title'] = 'Blocked';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $this->load->view('auth/header', $data);
+        $this->load->view('auth/blocked', $data);
+        $this->load->view('auth/footer', $data);
     }
 }

@@ -792,4 +792,37 @@ class Dashboard extends CI_Controller {
 			redirect('dashboard/pesanan_user/'.$id_user);
 		}
 	}
+	public function detail_toko_ulasan($id)
+	{
+        $data['title'] = 'Toko Saya | Ulasan Page';
+		$data['kategori'] = $this->Model_kategori->ambil_data()->result();
+		$data['toko'] = $this->Model_toko->toko_by_id($id);
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $id_toko = $data['toko']->id_toko;
+        $hitung = $this->Model_chat->notif($id_toko)->result();
+        $jumlah_notif = 0;
+        if(!empty($hitung)){
+            foreach($hitung as $h):
+                $jumlah_notif++;
+            endforeach;
+        }
+        $data['ulasan'] = $this->Model_order->ulasan_toko($id_toko)->result();
+        $ulasan_array = $this->Model_order->ulasan_toko($id_toko)->result();
+        $rating = 0;
+        $count_ratting = 0;
+		if (!empty($ulasan_array)){
+			foreach($ulasan_array as $ua):
+				$rating = $rating + $ua->rating;
+				$count_ratting = $count_ratting + 1;
+			endforeach;
+        $data['overall'] = $rating / $count_ratting;
+		} else {
+			$data['overall'] = 0;
+		}
+        $data['notifikasi'] = $jumlah_notif;
+		$this->load->view('template/header',$data);
+		$this->load->view('template/navbar',$data);
+		$this->load->view('detail_toko_ulasan',$data);
+		$this->load->view('template/footer');
+	}
 }

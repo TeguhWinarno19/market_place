@@ -7,7 +7,7 @@ class Shop extends CI_Controller {
         $this->load->library('form_validation');
     }
     public function dashboard(){
-        $data['title'] = 'Toko Saya';
+        $data['title'] = 'Toko Saya | Dashboard Toko';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $id_user = $data['user']['id_user'];
         $data['toko'] = $this->Model_toko->joinKategoriToko($id_user);
@@ -60,7 +60,7 @@ class Shop extends CI_Controller {
         $this->load->view('shop/footer',$data);
     }
     public function order_masuk(){
-        $data['title'] = 'Toko Saya';
+        $data['title'] = 'Toko Saya | Order List';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $id_user = $data['user']['id_user'];
         $data['toko'] = $this->Model_toko->joinKategoriToko($id_user);
@@ -241,7 +241,7 @@ class Shop extends CI_Controller {
         redirect('shop/order_masuk');
     }
     public function beranda(){
-        $data['title'] = 'Toko Saya';
+        $data['title'] = 'Toko Saya | Beranda Toko';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $id_user = $data['user']['id_user'];
         $data['kategori'] = $this->Model_kategori->ambil_data()->result();
@@ -325,7 +325,7 @@ class Shop extends CI_Controller {
     }
     public function detail_toko_produk($id)
 	{
-        $data['title'] = 'Toko Saya';
+        $data['title'] = 'Toko Saya | Produk Toko';
 
 		$data['kategori'] = $this->Model_kategori->ambil_data()->result();
 		$data['barang'] = $this->Model_barang->toko($id)->result();
@@ -370,11 +370,15 @@ class Shop extends CI_Controller {
         $ulasan_array = $this->Model_order->ulasan_toko($id_toko)->result();
         $rating = 0;
         $count_ratting = 0;
-        foreach($ulasan_array as $ua):
-            $rating = $rating + $ua->rating;
-            $count_ratting = $count_ratting + 1;
-        endforeach;
+		if (!empty($ulasan_array)){
+			foreach($ulasan_array as $ua):
+				$rating = $rating + $ua->rating;
+				$count_ratting = $count_ratting + 1;
+			endforeach;
         $data['overall'] = $rating / $count_ratting;
+		} else {
+			$data['overall'] = 0;
+		}
         $data['notifikasi'] = $jumlah_notif;
 		$this->load->view('shop/header',$data);
 		$this->load->view('shop/sidebar',$data);
@@ -383,7 +387,7 @@ class Shop extends CI_Controller {
 		$this->load->view('shop/footer');
 	}
     public function edit(){
-        $data['title'] = 'Toko Saya';
+        $data['title'] = 'Toko Saya | Edit Toko';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $id_user = $data['user']['id_user'];
         $data['kategori'] = $this->Model_kategori->ambil_data()->result();
@@ -425,7 +429,7 @@ class Shop extends CI_Controller {
         }
     }
     public function index(){
-        $data['title'] = 'Toko Saya';
+        $data['title'] = 'Toko Saya | Product Management';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $id_user = $data['user']['id_user'];
         $data['kategori'] = $this->Model_kategori->ambil_data()->result();
@@ -632,7 +636,7 @@ class Shop extends CI_Controller {
         redirect('shop');
     }
     public function klaim_list(){
-        $data['title'] = 'Toko Saya';
+        $data['title'] = 'Toko Saya | List Pengajuan Klaim';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $id_user = $data['user']['id_user'];
         $data['toko'] = $this->Model_toko->joinKategoriToko($id_user);
@@ -654,7 +658,7 @@ class Shop extends CI_Controller {
         $this->load->view('shop/footer',$data);
     }
     public function pencairan(){
-        $data['title'] = 'Toko Saya';
+        $data['title'] = 'Toko Saya | List Dana Dicairkan';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $id_user = $data['user']['id_user'];
         $data['toko'] = $this->Model_toko->joinKategoriToko($id_user);

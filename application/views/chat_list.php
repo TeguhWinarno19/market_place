@@ -3,8 +3,9 @@
     <div class="row justify-content-center">
         <div class="col-lg-5 col-md-3 col-sm-5 col-12 mb-3">
             <div class="card">
-                <div class="card-body">
-                    <h3>Daftar Chat</h3>
+                <div class="card-body bg-success">
+                    <h3 class=" text-white">Daftar Chat</h3>
+                    <hr>
                     <?php foreach ($chats1 as $chat): ?>
                         <?php $lawan = $this->Model_toko->toko_by_id2($chat->id_toko)->result() ?>
                         <?php foreach($lawan as $l) :?>
