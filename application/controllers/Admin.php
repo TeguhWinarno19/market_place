@@ -253,7 +253,7 @@ class Admin extends CI_Controller {
         $this->load->view('admin/footer', $data);
     }
     public function cetak_product_management(){
-		$data['barang'] = $this->Model_barang->ambil_data_all()->result_array();
+		$data['barang'] = $this->Model_barang->ambil_data_all()->result();
 		$this->load->view('cetak/cetak_data_barang', $data);
 	}
     public function excel_product_management() 
