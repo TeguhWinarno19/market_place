@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Barang</title>
+    <title>Data Toko</title>
     <style type="text/css">
     .table-data{ width: 100%; border-collapse: collapse; } 
     .table-data tr th, 

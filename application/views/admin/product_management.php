@@ -6,8 +6,8 @@
                     <h3><strong>Product Management</strong></h3>
                 </div>
                 <div class="col-6 text-right">
-                    <a href="<?= base_url('admin/cetak_product_management'); ?>" class="btn btn-primary mb-3"><i class="fas fa-print"></i> </a>
-                    <a href="<?= base_url('admin/excel_product_management'); ?>" class="btn btn-success mb-3"><i class="far fa-file-excel"></i> </a>
+                    <a href="<?= base_url('admin/cetak_product_management'); ?>" class="btn btn-primary mb-3"><i class="fas fa-print"></i> Cetak Data Produk</a>
+                    <a href="<?= base_url('admin/excel_product_management'); ?>" class="btn btn-success mb-3"><i class="far fa-file-excel"></i> Export Data Produk</a>
                 </div>
             </div>
             <hr>

@@ -12,23 +12,34 @@ header('Expires:0');
     <thead>
         <tr>
             <th>No</th>
-            <th>Nama Barang</th>
-            <th>Keterangan</th>
-            <th>stok</th>
-            <th>Harga</th>
+            <th>Nama toko</th>
+            <th>Pemilik</th>
+            <th>Status</th>
+            <th>Kota</th>
+            <th>Bank</th>
+            <th>Rekening</th>
         </tr>
     </thead>
     <tbody>
     <?php
     $no = 1; 
-    foreach($barang as $b){ 
+    foreach($toko as $p){ 
     ?>
     <tr>
         <th scope="row"><?= $no++; ?></th> 
-        <td><?= $b['nama_barang']; ?></td>
-        <td><?= $b['keterangan']; ?></td>
-        <td><?= $b['stok']; ?></td>
-        <td><?= $b['harga']; ?></td>
+        <td><?= $p['nama_toko']; ?></td>
+        <td><?= $p['nama']; ?></td>
+        <td>
+            <?php if($p['status'] == 0){
+                echo "aktif";
+            } else {
+                echo "tidak aktif";
+            }                
+            ?>
+        </td>
+        <td><?= $p['kota']; ?></td>
+        <td><?= $p['bank']; ?></td>
+        <td><?= $p['no_rekening']; ?></td>
     </tr>
     <?php } ?>
     </tbody>

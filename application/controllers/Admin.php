@@ -253,14 +253,26 @@ class Admin extends CI_Controller {
         $this->load->view('admin/footer', $data);
     }
     public function cetak_product_management(){
-		$data['barang'] = $this->Model_barang->ambil_data_all()->result();
+		$data['barang'] = $this->Model_barang->ambil_data_all()->result_array();
 		$this->load->view('cetak/cetak_data_barang', $data);
 	}
     public function excel_product_management() 
     {
         $data = array('title' => 'Laporan Data barang',
         'barang' => $this->Model_barang->ambil_data_all()->result_array());
+        $this->load->view('cetak/export-excel-barang', $data); 
+    }
+    public function excel_shop_management() 
+    {
+        $data = array('title' => 'Laporan Data Toko',
+        'toko' => $this->Model_toko->tampil_data()->result_array());
         $this->load->view('cetak/export-excel-shop', $data); 
+    }
+    public function excel_user_management() 
+    {
+        $data = array('title' => 'Laporan Data Pengguna',
+        'pengguna' => $this->Model_user->tampil_data()->result_array());
+        $this->load->view('cetak/export-excel-user', $data); 
     }
     public function cetak_user_management(){
 		$data['pengguna'] = $this->Model_user->tampil_data()->result();;

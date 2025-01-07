@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Barang</title>
+    <title>Data User</title>
     <style type="text/css">
     .table-data{ width: 100%; border-collapse: collapse; } 
     .table-data tr th, 
@@ -18,7 +18,7 @@
 </style>
 </head>
 <body>
-    <h3><center>Data Barang</center></h3>
+    <h3><center>Data User</center></h3>
     <hr>
     <table class="table-data">
         <thead>
